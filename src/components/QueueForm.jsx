@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 
-
-const QueueForm = ({setQueueList}) => {
+const QueueForm = ({ setQueueList, queueList }) => {
   const [nameInput, setNameInput] = useState("");
-  const [serviceInput, setServiceInput] = useState("")
-  const [nextToken,setNextToken] = useState(1)
+  const [serviceInput, setServiceInput] = useState("");
 
-  const addToQueue = ()=>{
+  const addToQueue = () => {
     if (!nameInput || !serviceInput) {
-      return
+      return;
     }
-    setQueueList(prev=>(
-      [...prev,
-        {
-          // TODO: improve tokenNumber logic
-          tokenNumber: prev.length + 1,
-          name:nameInput,
-          service:serviceInput,
-          status:"waiting"
-        }
-      ]
-    ))
-    setNameInput("")
-    setServiceInput("")
-  }
+    setQueueList((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        tokenNumber:
+          queueList.length > 0
+            ? Math.max(...queueList.map((c) => c.tokenNumber)) + 1
+            : 1,
+        name: nameInput,
+        service: serviceInput,
+        status: "waiting",
+      },
+    ]);
+    setNameInput("");
+    setServiceInput("");
+  };
 
   return (
     <div className="w-full max-w-80 h-fit bg-gray-800 rounded-lg py-5 px-6">
@@ -39,8 +39,9 @@ const QueueForm = ({setQueueList}) => {
       />
       <select
         className="w-full bg-gray-500 p-2 rounded-md text-white mb-4"
-        value={serviceInput} 
-        onChange={e=>setServiceInput(e.target.value)}
+        value={serviceInput}
+        onChange={(e) => setServiceInput(e.target.value)}
+        required
       >
         <option value="">Select Service</option>
         <option value="Meeting">Meeting</option>
@@ -48,7 +49,10 @@ const QueueForm = ({setQueueList}) => {
         <option value="Payment">Payment</option>
         <option value="Support">Support</option>
       </select>
-      <button className="w-full bg-blue-500 p-2 rounded-md font-medium text-white active:bg-blue-600" onClick={addToQueue}>
+      <button
+        className="w-full bg-blue-500 p-2 rounded-md font-medium text-white active:bg-blue-600"
+        onClick={addToQueue}
+      >
         Add to Queue
       </button>
     </div>

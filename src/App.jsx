@@ -1,16 +1,21 @@
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import QueueForm from "./components/QueueForm";
 import QueueList from "./components/QueueList";
 
 const App = () => {
-  const [queueList, setQueueList] = useState([]);
-
-  const removeFromQueue = (tokenNumber) => {
-    setQueueList((prev) => prev.filter((c) => c.tokenNumber !== tokenNumber));
+  const [queueList, setQueueList] = useState(() => {
+    try {
+      const stored = localStorage.getItem("queue");
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      return [];
+    }
+  });
+  const removeFromQueue = (itemId) => {
+    setQueueList((prev) => prev.filter((c) => c.id !== itemId));
   };
 
   const serveCustomer = () => {
-
     setQueueList((prev) => {
       const servingIndex = prev.findIndex(
         (customer) => customer.status === "serving",
@@ -32,6 +37,15 @@ const App = () => {
       });
     });
   };
+  const clearServedFromQueue = () => {
+    setQueueList((prev) =>
+      prev.filter((customer) => customer.status !== "served"),
+    );
+  };
+
+  useEffect(() => {
+    localStorage.setItem("queue", JSON.stringify(queueList));
+  }, [queueList]);
 
   return (
     <>
@@ -45,11 +59,15 @@ const App = () => {
           </p>
         </header>
         <main className="flex max-w-6xl h-2/3 mx-auto gap-4">
-          <QueueForm setQueueList={setQueueList} />
+          <QueueForm
+            setQueueList={setQueueList}
+            queueList={queueList}
+          />
           <QueueList
             queueList={queueList}
             onRemove={removeFromQueue}
             serveCustomer={serveCustomer}
+            clearServed={clearServedFromQueue}
           />
         </main>
       </div>
