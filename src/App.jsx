@@ -49,16 +49,16 @@ const App = () => {
 
   return (
     <>
-      <div className="w-full h-screen bg-black/90 pt-20">
+      <div className="w-full min-h-screen lg:h-screen bg-black/90 py-5 px-4 md:pt-20">
         <header className="max-w-6xl mx-auto text-center py-6 px-4 ">
-          <h1 className="text-4xl font-bold text-blue-500 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 mb-2">
             Queue Management System
           </h1>
-          <p className="text-gray-400 font-medium">
+          <p className="text-sm sm:text-base text-gray-400 font-medium">
             Manage your Customers efficiently
           </p>
         </header>
-        <main className="flex max-w-6xl h-2/3 mx-auto gap-4">
+        <main className="container max-w-6xl lg:h-2/3  mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-4 ">
           <QueueForm
             setQueueList={setQueueList}
             queueList={queueList}

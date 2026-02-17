@@ -26,7 +26,7 @@ const QueueForm = ({ setQueueList, queueList }) => {
   };
 
   return (
-    <div className="w-full max-w-80 h-fit bg-gray-800 rounded-lg py-5 px-6">
+    <div className="w-full max-w-xl lg:max-w-84 h-fit bg-gray-800 rounded-lg py-5 px-6">
       <h3 className="text-xl font-bold text-blue-500 mb-4">Add to Queue</h3>
       <input
         type="text"
